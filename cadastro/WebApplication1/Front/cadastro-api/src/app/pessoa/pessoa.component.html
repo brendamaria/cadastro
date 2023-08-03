@@ -1,0 +1,46 @@
+<div>
+    <span class="p-input-icon-left">
+        <i class="pi pi-search"></i>
+        <input type="text" pInputText [(ngModel)]="filtro" placeholder="Pesquisar por nome"/>
+    </span>
+    <p-button class="p-col-2" label="Pesquisar" (click)="filtrar()"></p-button>
+    <p-button class="p-col-2" label="Novo usuário" (onClick)="addPessoa()"></p-button>
+
+</div>
+
+<div>
+    <h1>Usuários</h1>
+    <p-table [value]="pessoas" [tableStyle]="{ 'min-width': '50rem' }">
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Nome</th>
+                <th>Cpf/Cnpj</th>
+                <th>Telefone</th>
+                <th>Email</th>
+                <th>Endereços comerciais</th>
+                <th>Endereços residenciais</th>
+                <th></th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-product>
+            <tr>
+                <td>{{ product.nomeRazaoSocial }}</td>
+                <td>{{ product.cpfCnpj }}</td>
+                <td>{{ product.telefone }}</td>
+                <td>{{ product.email }}</td>
+                <td>{{ product.enderecos.cep }}</td>
+                <td>{{ product.enderecos.endereco }}</td>
+                <td>
+                    <p-button label="Editar"></p-button>
+                    <p-button label="Excluir" (click)="abrirModal(product)"></p-button>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
+
+<p-dialog [(visible)]="excluir" [style]="{width: '50vw'}">
+     <span>Deseja realmente excluir este usuário?</span>
+     <span>essa ação é irreversível</span>
+     <p-button label="Excluir" (click)="selectProduct()"></p-button>
+</p-dialog>

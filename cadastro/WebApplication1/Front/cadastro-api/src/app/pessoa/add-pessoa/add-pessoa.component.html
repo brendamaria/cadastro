@@ -1,0 +1,60 @@
+<h1>Inserir novo usuário</h1>
+<form [formGroup]="form" (ngSubmit)="submit()">
+    <div class="card">
+        <div>
+            <p-dropdown (onChange)="aoSelecionar($event)" formControlName="tipoPessoa" [options]="tipoPessoa"
+                optionLabel="label" placeholder="Tipo de pessoa" optionValue="value"></p-dropdown>
+            <input formControlName="nomeRazaoSocial" type="text" pInputText placeholder="Nome" *ngIf="fisica" />
+            <input formControlName="nomeRazaoSocial" type="text" pInputText placeholder="Razão Social"
+                *ngIf="!fisica" />
+            <p-inputMask formControlName="cpfCnpj" mask="999.999.999-99" placeholder="CPF*"
+                *ngIf="fisica"></p-inputMask>
+            <p-inputMask formControlName="cpfCnpj" mask="99.999.999/9999-99" placeholder="CNPJ*"
+                *ngIf="!fisica"></p-inputMask>
+        </div>
+        <div>
+            <p-inputMask formControlName="telefone" mask="(99) 9 9999-9999" placeholder="Telefone*"></p-inputMask>
+            <input formControlName="email" type="text" pInputText placeholder="E-mail" />
+        </div>
+        <div>
+            <h4>Endereços</h4>
+            <p-button label="Adicionar endereço" (onClick)="abrirModal()"></p-button>
+            <p-table [value]="enderecos" [tableStyle]="{ 'min-width': '50rem' }">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-endereco>
+                    <tr>
+                        <td><i class="pi pi-home"></i></td>
+                        <td>{{ endereco.endereco }}</td>
+                        <td>
+                            <p-button pRipple icon="pi pi-times" (click)="selectEndereco(endereco)"></p-button>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+
+        <p-button label="Salvar" (onClick)="submit()"></p-button>
+    </div>
+</form>
+
+
+<p-dialog [(visible)]="visible" [style]="{width: '50vw'}">
+    <div class="p-grid" [formGroup]="formEndereco">
+        <p-dropdown formControlName="tipoEndereco" [options]="tipoEndereco" optionLabel="label"
+            placeholder="Tipo de endereço*" optionValue="value"></p-dropdown>
+        <input formControlName="endereco" type="text" pInputText placeholder="Endereço*" />
+        <input formControlName="numero" type="number" pInputText placeholder="Número" />
+        <input formControlName="complemento" type="text" pInputText placeholder="Complemento" />
+        <input formControlName="bairro" type="text" pInputText placeholder="Bairro*" />
+        <input formControlName="cep" type="text" pInputText placeholder="Cep*" />
+        <input formControlName="cidade" type="text" pInputText placeholder="Cidade*" />
+        <input formControlName="uf" type="text" pInputText placeholder="UF*" />
+        <p-button class="p-jc-end" label="Adicionar" (onClick)="adicionarEnderecoALista()"></p-button>
+    </div>
+</p-dialog>
