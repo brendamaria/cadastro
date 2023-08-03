@@ -22,9 +22,9 @@ export class PessoaService {
     return this.http.post(this.url, pessoa);
   }
 
-  edit(entity: any, e: any) {
-    entity.enderecos = e;
-    return this.http.put(this.url, entity.id, entity);
+  edit(pessoa: any, e: any) {
+    pessoa.enderecos = e;
+    return this.http.put(`${this.url}`, pessoa);
   }
 
   find(id: number): Observable<any> {
@@ -36,9 +36,12 @@ export class PessoaService {
   }
 
   findByNome(nome: string): Observable<any[]> {
-    return this.http.get<any>(`api/values/${nome}`)
+    return this.http.get<any>(`${this.url}/busca/${nome}`)
   }
 
+  searchByName(name: string): Observable<any[]> {
+    return this.http.get<any[]>(`${this.url}/search?name=${name}`);
+  }
 
 
 }

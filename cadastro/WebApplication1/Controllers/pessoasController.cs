@@ -40,8 +40,8 @@ namespace WebApplication1.Controllers
           {
               return NotFound();
           }
-            var pessoa = await _context.pessoas.FindAsync(id);
-
+            // var pessoa = await _context.pessoas.FindAsync(id);
+            var pessoa = await _context.pessoas.Include(i=>i.Enderecos).FirstOrDefaultAsync(p=>p.Id == id);
             if (pessoa == null)
             {
                 return NotFound();
@@ -52,23 +52,18 @@ namespace WebApplication1.Controllers
 
         // PUT: api/pessoas/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Putpessoa(int id, pessoa pessoa)
+        [HttpPut]
+        public async Task<IActionResult> Putpessoa(pessoa pessoa)
         {
-            if (id != pessoa.Id)
-            {
-                return BadRequest();
-            }
 
             _context.Entry(pessoa).State = EntityState.Modified;
-
             try
             {
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!pessoaExists(id))
+                if (!pessoaExists(pessoa.Id))
                 {
                     return NotFound();
                 }
@@ -121,11 +116,27 @@ namespace WebApplication1.Controllers
             return (_context.pessoas?.Any(e => e.Id == id)).GetValueOrDefault();
         }
 
-        // GET api/values/nome
-    //    [Route("api/values/{nome}")]
-   //     public ActionResult<IEnumerable<pessoa>> BuscaNome(string nome)
-   //     {
-    //        return _context.pessoas.Where(p => p.NomeRazaoSocial.Contains(nome)).ToList();
-     //   }
+
+
+        [HttpGet("search")]
+        public async Task<ActionResult<IEnumerable<pessoa>>> SearchPessoas(string name)
+        {
+            if (string.IsNullOrEmpty(name))
+            {
+                return BadRequest("Name parameter is required.");
+            }
+    
+            var pessoas = await _context.pessoas
+                .Include(i => i.Enderecos)
+                .Where(p => p.NomeRazaoSocial.Contains(name))
+                .ToListAsync();
+
+            if (pessoas == null || pessoas.Count == 0)
+            {
+                return NotFound();
+            }
+
+            return pessoas;
+        }   
     }
 }

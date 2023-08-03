@@ -24,16 +24,8 @@ export class AddPessoaComponent {
   ) { }
 
   ngOnInit(): void {
-    this.url = window.location.href.split('/');
-    this.acao = this.url[this.url.length-2];
-    if (this.acao == "Editar") { //Ação de editar
-      this.popularPessoa(this.url[6]);
-    } else {
-      this.acao = "Adicionar";
-    };
-
     this.form = this.fb.group({
-      id: [null],
+      id: 0,
       tipoPessoa: [null, Validators.required],
       nomeRazaoSocial: [null, Validators.required],
       cpfCnpj: [null, Validators.required],
@@ -41,7 +33,13 @@ export class AddPessoaComponent {
       email: [''],
       enderecos: this.fb.array([])
     })
-
+    this.url = window.location.href.split('/');
+    this.acao = this.url[this.url.length-2];
+    if (this.acao == "editar") { //Ação de editar
+      this.popularPessoa(this.url[5]);
+    } else {
+      this.acao = "Adicionar";
+    };
     this.form.controls['nomeRazaoSocial'].disable();
     this.form.controls['cpfCnpj'].disable();
   }
@@ -66,7 +64,6 @@ export class AddPessoaComponent {
   formEndereco = this.fb.group({
     id: 0,
     cep: [null, Validators.required],
-    endereco: [null],
     cidade: [null, Validators.required],
     numero: [null],
     complemento: [null],
@@ -92,7 +89,7 @@ export class AddPessoaComponent {
       enderecos: [],
     };
 
-    if (this.form.value.id != null) {
+    if (this.form.value.id != 0) {
       this.pessoaService.edit(pessoa, this.enderecos).subscribe((response: any) => {
         this.router.navigate([''])
       })
@@ -117,6 +114,7 @@ export class AddPessoaComponent {
     this.formEndereco.controls['i'].setValue(this.enderecos.length + 1)
     this.enderecos.push(this.formEndereco.value);
     this.formEndereco.reset();
+    this.formEndereco.controls['id'].setValue(0);
     this.visible = false;
   }
 
@@ -131,8 +129,19 @@ export class AddPessoaComponent {
   }
 
   popularPessoa(id: string) {
+    let p: any;
     this.pessoaService.find(Number(id)).subscribe((editar: any) => {
-      this.novaPessoa = editar;
+      p = editar;
+      this.form = this.fb.group({
+        id: p.id,
+        tipoPessoa: [p.tipoPessoa, Validators.required],
+        nomeRazaoSocial: [p.nomeRazaoSocial, Validators.required],
+        cpfCnpj: [p.cpfCnpj, Validators.required],
+        telefone: [p.telefone, Validators.required],
+        email: [p.email],
+        enderecos: [p.enderecos]
+      })
+      p.enderecos.forEach((x: any) => this.enderecos.push(x))
     });
   }
 

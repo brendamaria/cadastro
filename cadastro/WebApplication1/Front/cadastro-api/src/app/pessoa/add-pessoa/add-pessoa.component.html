@@ -30,7 +30,7 @@
                 <ng-template pTemplate="body" let-endereco>
                     <tr>
                         <td><i class="pi pi-home"></i></td>
-                        <td>{{ endereco.endereco }}</td>
+                        <td>{{ endereco.numero + ", " + endereco.complemento + ", " + endereco.bairro + ", " + endereco.cep + ", " + endereco.cidade + ", " + endereco.uf }}</td>
                         <td>
                             <p-button pRipple icon="pi pi-times" (click)="selectEndereco(endereco)"></p-button>
                         </td>
@@ -39,7 +39,8 @@
             </p-table>
         </div>
 
-        <p-button label="Salvar" class="p-mr-2 p-mb-2" (onClick)="submit()"></p-button>
+        <p-button label="Salvar" class="p-mr-2 p-mb-2" (onClick)="submit()" *ngIf="this.acao != 'editar'"></p-button>
+        <p-button label="Editar" class="p-mr-2 p-mb-2" (onClick)="submit()" *ngIf="this.acao == 'editar'"></p-button>
     </div>
 </form>
 
@@ -49,7 +50,6 @@
       <div>
         <p-dropdown class="p-col-12 p-md-6 p-lg-3" formControlName="tipoEndereco" [options]="tipoEndereco" optionLabel="label"
             placeholder="Tipo de endereço*" optionValue="value"></p-dropdown>
-        <input class="p-col-12 p-md-6 p-lg-3" formControlName="endereco" type="text" pInputText placeholder="Endereço*" />
         <input class="p-col-12 p-md-6 p-lg-3" formControlName="numero" type="number" pInputText placeholder="Número" />
         <input class="p-col-12 p-md-6 p-lg-3" formControlName="complemento" type="text" pInputText placeholder="Complemento" />
       </div>

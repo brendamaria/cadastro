@@ -16,7 +16,7 @@ export class PessoaComponent implements OnInit {
   idEndereco: any[];
 
   id: number;
-  filtro:string;
+  filtro:string = '';
   acao:string;
 
   excluir = false;
@@ -53,9 +53,16 @@ export class PessoaComponent implements OnInit {
   }
 
   filtrar() {
-    this.pessoaService.findByNome(this.filtro).subscribe((pessoa: any) => {
-      this.pessoas = pessoa;
-    });
+    if (this.filtro.trim() !== '') {
+      this.pessoaService.searchByName(this.filtro).subscribe(
+        (data) => {
+          this.pessoas = data;
+        })
+    } else {
+      this.pessoaService.findAllPessoas().subscribe((pessoa: any) => {
+        this.pessoas = pessoa;
+      });
+    }
   }
 
   editar(id:number) {
