@@ -1,0 +1,66 @@
+<h1>Inserir novo usuário</h1>
+<form [formGroup]="form" (ngSubmit)="submit()">
+    <div class="ui-g-12 ui-md-12">
+        <div class="p-col-12 p-grid">
+            <p-dropdown class="p-col-12 p-md-6 p-lg-3" (onChange)="aoSelecionar($event)" formControlName="tipoPessoa" [options]="tipoPessoa"
+                optionLabel="label" placeholder="Tipo de pessoa" optionValue="value"></p-dropdown>
+            <input class="p-col-12 p-md-6 p-lg-3" formControlName="nomeRazaoSocial" type="text" pInputText placeholder="Nome" *ngIf="fisica" />
+            <input class="p-col-12 p-md-6 p-lg-3" formControlName="nomeRazaoSocial" type="text" pInputText placeholder="Razão Social"
+                *ngIf="!fisica" />
+            <p-inputMask class="p-col-12 p-md-6 p-lg-3" formControlName="cpfCnpj" mask="999.999.999-99" placeholder="CPF*"
+                *ngIf="fisica"></p-inputMask>
+            <p-inputMask class="p-col-12 p-md-6 p-lg-3" formControlName="cpfCnpj" mask="99.999.999/9999-99" placeholder="CNPJ*"
+                *ngIf="!fisica"></p-inputMask>
+        </div>
+        <div class="p-col-12 p-grid">
+            <p-inputMask class="p-col-12 p-md-6 p-lg-3" formControlName="telefone" mask="(99) 9 9999-9999" placeholder="Telefone*"></p-inputMask>
+            <input class="p-col-12 p-md-6 p-lg-3" formControlName="email" type="text" pInputText placeholder="E-mail" />
+        </div>
+        <div>
+            <h4>Endereços</h4>
+            <p-button label="Adicionar endereço" (onClick)="abrirModal()"></p-button>
+            <p-table [value]="enderecos" [tableStyle]="{ 'min-width': '50rem' }">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-endereco>
+                    <tr>
+                        <td><i class="pi pi-home"></i></td>
+                        <td>{{ endereco.endereco }}</td>
+                        <td>
+                            <p-button pRipple icon="pi pi-times" (click)="selectEndereco(endereco)"></p-button>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+
+        <p-button label="Salvar" class="p-mr-2 p-mb-2" (onClick)="submit()"></p-button>
+    </div>
+</form>
+
+
+<p-dialog [(visible)]="visible" [style]="{width: '90vw'}">
+    <div class="p-grid" style="display: flex;align-items: center;flex-wrap: wrap;" [formGroup]="formEndereco">
+      <div>
+        <p-dropdown class="p-col-12 p-md-6 p-lg-3" formControlName="tipoEndereco" [options]="tipoEndereco" optionLabel="label"
+            placeholder="Tipo de endereço*" optionValue="value"></p-dropdown>
+        <input class="p-col-12 p-md-6 p-lg-3" formControlName="endereco" type="text" pInputText placeholder="Endereço*" />
+        <input class="p-col-12 p-md-6 p-lg-3" formControlName="numero" type="number" pInputText placeholder="Número" />
+        <input class="p-col-12 p-md-6 p-lg-3" formControlName="complemento" type="text" pInputText placeholder="Complemento" />
+      </div>
+      <div>
+        <input class="p-col-12 p-md-6 p-lg-3" formControlName="bairro" type="text" pInputText placeholder="Bairro*" />
+        <input class="p-col-12 p-md-6 p-lg-3"formControlName="cep" type="text" pInputText placeholder="Cep*" />
+        <input class="p-col-12 p-md-6 p-lg-3" formControlName="cidade" type="text" pInputText placeholder="Cidade*" />
+        <input class="p-col-12 p-md-6 p-lg-3" formControlName="uf" type="text" pInputText placeholder="UF*" />
+      </div>
+    </div>
+    <div class="p-col-12">
+      <p-button class="p-jc-end" label="Adicionar" (onClick)="adicionarEnderecoALista()"></p-button>
+    </div>
+</p-dialog>
