@@ -7,7 +7,7 @@ export class Endereco {
         public numero?: number,
         public complemento?: string,
         public bairro?: string,
-        public tipoDoEndereco?: string,
+        public tipoEndereco?: string,
         public uf?: string
     ){}
 }

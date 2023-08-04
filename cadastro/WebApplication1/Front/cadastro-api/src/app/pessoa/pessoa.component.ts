@@ -3,6 +3,8 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { PessoaService } from '../pessoa.service';
 import { Router } from '@angular/router';
 import { EndecoService } from '../endeco.service';
+import { Pessoa } from '../shared/model/pessoa';
+import { Endereco } from '../shared/model/endereco';
 
 @Component({
   selector: 'app-pessoa',
@@ -11,7 +13,7 @@ import { EndecoService } from '../endeco.service';
 })
 export class PessoaComponent implements OnInit {
 
-  pessoas: any;
+  pessoas: Pessoa[];
 
   idEndereco: any[];
 
@@ -40,8 +42,8 @@ export class PessoaComponent implements OnInit {
     this.id = event.id;
   }
 
-  selectProduct() {
-    this.idEndereco.forEach(x => {
+  selectPeessoa() {
+    this.idEndereco.forEach((x) => {
       this.enderecoService.delete(x.id).subscribe(e => {
       })
     })
@@ -59,7 +61,7 @@ export class PessoaComponent implements OnInit {
           this.pessoas = data;
         })
     } else {
-      this.pessoaService.findAllPessoas().subscribe((pessoa: any) => {
+      this.pessoaService.findAllPessoas().subscribe((pessoa: Pessoa[]) => {
         this.pessoas = pessoa;
       });
     }

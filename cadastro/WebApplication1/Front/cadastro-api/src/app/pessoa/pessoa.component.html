@@ -25,17 +25,30 @@
         <th></th>
       </tr>
     </ng-template>
-    <ng-template pTemplate="body" let-product>
+    <ng-template pTemplate="body" let-pessoa>
       <tr>
-        <td>{{ product.nomeRazaoSocial }}</td>
-        <td>{{ product.cpfCnpj }}</td>
-        <td>{{ product.telefone }}</td>
-        <td>{{ product.email }}</td>
-        <td>{{ product.enderecos[0].cep }}</td>
-        <td>{{ product.enderecos[0].endereco }}</td>
+        <td>{{ pessoa.nomeRazaoSocial }}</td>
+        <td>{{ pessoa.cpfCnpj }}</td>
+        <td>{{ pessoa.telefone }}</td>
+        <td>{{ pessoa.email }}</td>
         <td>
-          <p-button label="Editar" (click)="editar(product.id)"></p-button>
-          <p-button label="Excluir" (click)="abrirModal(product)"></p-button>
+          <div *ngFor="let end of pessoa.enderecos">
+            <div *ngIf="end.tipoEndereco == 'C'">
+              {{ end.numero + ", " + end.complemento + ", " + end.bairro + ", " + end.cep + ", " + end.cidade + ", " +
+              end.uf + "; "}}
+            </div>
+          </div>
+        </td>
+        <td>
+          <div *ngFor="let end of pessoa.enderecos">
+            <div *ngIf="end.tipoEndereco == 'R'">
+              {{ end.numero + ", " + end.complemento + ", " + end.bairro + ", " + end.cep + ", " + end.cidade + ", " +
+              end.uf + "; "}}
+            </div>
+          </div>
+        <td>
+          <p-button label="Editar" (click)="editar(pessoa.id)"></p-button>
+          <p-button label="Excluir" (click)="abrirModal(pessoa)"></p-button>
         </td>
       </tr>
     </ng-template>
@@ -48,6 +61,6 @@
     <span>essa ação é irreversível</span>
   </div>
   <div>
-    <p-button label="Excluir" (click)="selectProduct()"></p-button>
+    <p-button label="Excluir" (click)="selectPeessoa()"></p-button>
   </div>
 </p-dialog>
