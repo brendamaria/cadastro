@@ -16,12 +16,12 @@
   <p-table [value]="pessoas" [tableStyle]="{ 'min-width': '50rem' }">
     <ng-template pTemplate="header">
       <tr>
-        <th>Nome</th>
-        <th>Cpf/Cnpj</th>
-        <th>Telefone</th>
-        <th>Email</th>
-        <th>Endereços comerciais</th>
-        <th>Endereços residenciais</th>
+        <th style="width:14%">Nome</th>
+        <th style="width:14%">Cpf/Cnpj</th>
+        <th style="width:14%">Telefone</th>
+        <th style="width:14%">Email</th>
+        <th style="width:14%">Endereços comerciais</th>
+        <th style="width:14%">Endereços residenciais</th>
         <th></th>
       </tr>
     </ng-template>
@@ -55,12 +55,10 @@
   </p-table>
 </div>
 
-<p-dialog [(visible)]="excluir" [style]="{width: '50vw'}">
-  <div>
-    <span>Deseja realmente excluir este usuário?</span>
-    <span>essa ação é irreversível</span>
-  </div>
-  <div>
-    <p-button label="Excluir" (click)="selectPeessoa()"></p-button>
+<p-dialog [(visible)]="excluir" [style]="{width: '25vw'}">
+  <div class="p-grid" style="text-align: center;">
+      <p style="font-size: 25px;">Deseja realmente excluir este usuário?</p>
+      <p style="font-size: 20px;">essa ação é irreversível</p>
+      <p-button class="p-col-12 p-field" label="Remover" (click)="selectPeessoa()"></p-button>
   </div>
 </p-dialog>
